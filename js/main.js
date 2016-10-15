@@ -6,8 +6,9 @@ var INTERVAL = 100;
 
 console.log('hello world');
 
-var startTime = new Date().getTime();
+var startTime = 0;
 var time = 0;
+var offset = 0;
 var display = '0.0';
 var runTimer = false;
 
@@ -15,34 +16,59 @@ function tick() {
   time += 100;
 
   var currTime = new Date().getTime();
-  var offset = currTime - startTime - time;
+  var elapsed = currTime - startTime + offset - time;
 
   display = Math.floor(time / 100) / 10;
   if (Math.round(display) == display) {
     display += '.0';
   }
-  $('.timerDisplay').text(display);
+  updateDisplay(display, elapsed);
 
   if (runTimer) {
-    window.setTimeout(tick, INTERVAL - offset);
+    window.setTimeout(tick, INTERVAL - elapsed);
+  } else {
+    offset += currTime - startTime;
   }
 };
 
+function updateDisplay(display, elapsed) {
+  $('.timerDisplay').text(display);
+  $('.offsetDisplay').text(elapsed);
+};
+
 function resetState() {
+  stop();
+
+  time = 0;
+  offset = 0;
+  display = '0.0';
   runTimer = false;
 
+  updateDisplay(display, 0);
+};
+
+function start() {
+  runTimer = true;
+  startTime = new Date().getTime();
+  window.setTimeout(tick, INTERVAL);
+};
+
+function stop() {
+  runTimer = false;
 };
 
 $('#startStopButton').on('click', (event) => {
   if (runTimer) {
-    runTimer = false;
+    stop();
+    $('#startStopButton').text('Start');
   } else {
-    runTimer = true;
-    window.setTimeout(tick, INTERVAL);
+    start();
+    $('#startStopButton').text('Stop');
   }
 });
 
 $('#resetButton').on('click', (event) => {
+  resetState();
 });
 
 });
