@@ -48,22 +48,22 @@ function resetState() {
 };
 
 function start() {
+  $('#startStopButton').text('Stop');
   runTimer = true;
   startTime = new Date().getTime();
   window.setTimeout(tick, INTERVAL);
 };
 
 function stop() {
+  $('#startStopButton').text('Start');
   runTimer = false;
 };
 
 $('#startStopButton').on('click', (event) => {
   if (runTimer) {
     stop();
-    $('#startStopButton').text('Start');
   } else {
     start();
-    $('#startStopButton').text('Stop');
   }
 });
 
