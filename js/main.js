@@ -2,7 +2,8 @@
 
 $(function() {
 
-const INTERVAL = 100;
+// Interval in ms to tick.
+const INTERVAL = 1000;
 
 class Timer {
 
@@ -11,35 +12,44 @@ class Timer {
   }
 
   constructor(countDownTime) {
+    this.countDownTime = this.convertCountDownTime(countDownTime);
+
     this.startTime = 0;
     this.time = 0;
-    this.offset = 0;
-    this.display = '0.0';
+    this.elapsedTime = 0;
+    this.displayTime = '0.0';
     this.runTimer = false;
+
+    this.updateDisplay(this.time, 0);
+  }
+
+  // Convert the initial countDownTime from minutes to seconds
+  convertCountDownTime(countDownTime) {
+    return countDownTime * 60;
   }
 
   tick() {
-    this.time += 100;
+    this.time += Timer.INTERVAL;
 
     var currTime = new Date().getTime();
-    var elapsed = currTime - this.startTime + this.offset - this.time;
+    var offset = currTime - this.startTime + this.elapsedTime - this.time;
 
-    this.display = Math.floor(this.time / 100) / 10;
-    if (Math.round(this.display) == this.display) {
-      this.display += '.0';
-    }
-    this.updateDisplay(this.display, elapsed);
+    this.updateDisplay(this.time, offset);
 
     if (this.runTimer) {
-      window.setTimeout(() => {this.tick();}, Timer.INTERVAL - elapsed);
+      window.setTimeout(() => {this.tick();}, Timer.INTERVAL - offset);
     } else {
-      this.offset += currTime - this.startTime;
+      this.elapsedTime += currTime - this.startTime;
     }
   }
 
-  updateDisplay(display, elapsed) {
-    $('.timerDisplay').text(display);
-    $('.offsetDisplay').text(elapsed);
+  updateDisplay(time, offset) {
+    var rawPassedTime = this.countDownTime - Math.floor(time / 1000);
+    this.displayTime = Math.floor(rawPassedTime / 60) + ' ' +
+        rawPassedTime % 60;
+
+    $('.timerDisplay').text(this.displayTime);
+    $('.offsetDisplay').text(offset);
   }
 
   playBell() {
@@ -51,7 +61,7 @@ class Timer {
     this.stop();
 
     this.time = 0;
-    this.offset = 0;
+    this.elapsedTime = 0;
     this.display = '0.0';
     this.runTimer = false;
 
@@ -71,7 +81,7 @@ class Timer {
   }
 }
 
-var timer = new Timer();
+var timer = new Timer(2);
 
 $('#startStopButton').on('click', (event) => {
   if (timer.runTimer) {
