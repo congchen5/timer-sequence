@@ -2,73 +2,87 @@
 
 $(function() {
 
-var INTERVAL = 100;
+const INTERVAL = 100;
 
-console.log('hello world');
+class Timer {
 
-var startTime = 0;
-var time = 0;
-var offset = 0;
-var display = '0.0';
-var runTimer = false;
-
-function tick() {
-  time += 100;
-
-  var currTime = new Date().getTime();
-  var elapsed = currTime - startTime + offset - time;
-
-  display = Math.floor(time / 100) / 10;
-  if (Math.round(display) == display) {
-    display += '.0';
+  static get INTERVAL() {
+    return INTERVAL;
   }
-  updateDisplay(display, elapsed);
 
-  if (runTimer) {
-    window.setTimeout(tick, INTERVAL - elapsed);
-  } else {
-    offset += currTime - startTime;
+  constructor(countDownTime) {
+    this.startTime = 0;
+    this.time = 0;
+    this.offset = 0;
+    this.display = '0.0';
+    this.runTimer = false;
   }
-};
 
-function updateDisplay(display, elapsed) {
-  $('.timerDisplay').text(display);
-  $('.offsetDisplay').text(elapsed);
-};
+  tick() {
+    this.time += 100;
 
-function resetState() {
-  stop();
+    var currTime = new Date().getTime();
+    var elapsed = currTime - this.startTime + this.offset - this.time;
 
-  time = 0;
-  offset = 0;
-  display = '0.0';
-  runTimer = false;
+    this.display = Math.floor(this.time / 100) / 10;
+    if (Math.round(this.display) == this.display) {
+      this.display += '.0';
+    }
+    this.updateDisplay(this.display, elapsed);
 
-  updateDisplay(display, 0);
-};
+    if (this.runTimer) {
+      window.setTimeout(() => {this.tick();}, Timer.INTERVAL - elapsed);
+    } else {
+      this.offset += currTime - this.startTime;
+    }
+  }
 
-function start() {
-  $('#startStopButton').text('Stop');
-  runTimer = true;
-  startTime = new Date().getTime();
-  window.setTimeout(tick, INTERVAL);
-};
+  updateDisplay(display, elapsed) {
+    $('.timerDisplay').text(display);
+    $('.offsetDisplay').text(elapsed);
+  }
 
-function stop() {
-  $('#startStopButton').text('Start');
-  runTimer = false;
-};
+  playBell() {
+    var alarmSound = new Audio('/media/ship-bell.mp3');
+    alarmSound.play();
+  }
+
+  resetState() {
+    this.stop();
+
+    this.time = 0;
+    this.offset = 0;
+    this.display = '0.0';
+    this.runTimer = false;
+
+    this.updateDisplay(this.display, 0);
+  }
+
+  start() {
+    $('#startStopButton').text('Stop');
+    this.runTimer = true;
+    this.startTime = new Date().getTime();
+    window.setTimeout(() => {this.tick();}, Timer.INTERVAL);
+  }
+
+  stop() {
+    $('#startStopButton').text('Start');
+    this.runTimer = false;
+  }
+}
+
+var timer = new Timer();
 
 $('#startStopButton').on('click', (event) => {
-  if (runTimer) {
-    stop();
+  if (timer.runTimer) {
+    timer.stop();
   } else {
-    start();
+    timer.start();
   }
 });
 
 $('#resetButton').on('click', (event) => {
-  resetState();
+  timer.resetState();
 });
 
 });
