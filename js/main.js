@@ -5,7 +5,7 @@ $(function() {
 // Interval in ms to tick.
 const INTERVAL = 1000;
 
-var eyeTherapyTimers = [1,2,3,4,5];
+var eyeTherapyTimers = [0.1,2,3,4,5];
 //  [1,1,1,1,1,1,3,1,1,3,5,2,2,2,5];
 
 var timer = null;
@@ -63,8 +63,7 @@ class Timer {
       secDisplay = '0' + secDisplay;
     }
 
-    // Fix issue with negative number showing.
-    this.displayTime = Math.floor(rawPassedTime / 60) + ' ' +
+    this.displayTime = Math.floor(Math.abs(rawPassedTime) / 60) + ' ' +
         secDisplay;
     if (rawPassedTime < 0) {
       this.displayTime = '-' + this.displayTime;
@@ -153,6 +152,22 @@ class TimerSequence {
   setTimer(index) {
     this.timer.stop();
     this.timer.setCountDownTime(this.sequence[index]);
+
+    if (index == 0) {
+      $('#prevTimerButton').prop('disabled', true);
+    } else {
+      $('#prevTimerButton').prop('disabled', false);
+      $('#prevTimerButton').text('Previous Timer: ' +
+          this.sequence[index-1] + 'min');
+    }
+
+    if (index == this.sequence.length - 1) {
+      $('#nextTimerButton').prop('disabled', true);
+    } else {
+      $('#nextTimerButton').prop('disabled', false);
+      $('#nextTimerButton').text('Next Timer: ' +
+          this.sequence[index+1] + 'min');
+    }
   }
 }
 
