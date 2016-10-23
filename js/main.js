@@ -13,6 +13,7 @@ class Timer {
 
   constructor(countDownTime) {
     this.countDownTime = this.convertCountDownTime(countDownTime);
+    this.countDownTimeMs = this.countDownTime * 1000;
 
     this.startTime = 0;
     this.time = 0;
@@ -37,6 +38,11 @@ class Timer {
     this.updateDisplay(this.time, offset);
 
     if (this.runTimer) {
+      // Check if it's the end.
+      if (this.time >= this.countDownTimeMs) {
+        this.playBell();
+      }
+
       window.setTimeout(() => {this.tick();}, Timer.INTERVAL - offset);
     } else {
       this.elapsedTime += currTime - this.startTime;
@@ -45,8 +51,18 @@ class Timer {
 
   updateDisplay(time, offset) {
     var rawPassedTime = this.countDownTime - Math.floor(time / 1000);
-    this.displayTime = Math.floor(rawPassedTime / 60) + ' ' +
-        rawPassedTime % 60;
+
+    // Prepend with 0 if is a single digit.
+    var secDisplay = Math.abs(rawPassedTime % 60);
+    if (secDisplay < 10) {
+      secDisplay = '0' + secDisplay;
+    }
+
+    this.displayTime = Math.round(rawPassedTime / 60) + ' ' +
+        secDisplay;
+    if (rawPassedTime < 0) {
+      this.displayTime = '-' + this.displayTime;
+    }
 
     $('.timerDisplay').text(this.displayTime);
     $('.offsetDisplay').text(offset);
@@ -81,7 +97,7 @@ class Timer {
   }
 }
 
-var timer = new Timer(2);
+var timer = new Timer(0.1);
 
 $('#startStopButton').on('click', (event) => {
   if (timer.runTimer) {
