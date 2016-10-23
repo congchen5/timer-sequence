@@ -18,3 +18,12 @@ body {
 .container {
   margin: 0 auto;
 }
+
+.timer {
+  display: block;
+}
+
+.sequenceControls {
+  display: block;
+  margin: 5px 0;
+}
