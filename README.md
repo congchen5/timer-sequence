@@ -12,7 +12,7 @@ For example:
 - 1 minute of slow blinking
 - 1 minute of squeeze blinking
 - 3 minute of pumping
-...
+- etc...
 
 The sequence of timer is essentially (in minutes): 1,1,1,1,1,1,3,1,1,5,2,2,2,5
 
