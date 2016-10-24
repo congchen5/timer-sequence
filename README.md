@@ -19,4 +19,7 @@ The sequence of timer is essentially (in minutes): 1,1,1,1,1,1,3,1,1,5,2,2,2,5
 This is tedious to constantly set a different timer length on the phone. Thus, I made this site, optimize for mobile web, which allows you to set the sequence and it'll have the next one lined up.
 
 ##How to use
-Currently, the sequence is hardcoded in. You start at the first timer value (1 min). Once it's complete, you can stop and press the button for the next timer. You can go back and forth as you like.
+Currently, the website is hard set to mobile web with the sequence hardcoded in.
+The website is currently temporarly located at http://congchen.me/
+
+Usage is pretty straightforward. You start at the first timer value (1 min). Once it's complete, it will ring and you can stop it and go onto the next timer. You can go back and forth as you like.
