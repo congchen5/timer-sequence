@@ -5,8 +5,7 @@ $(function() {
 // Interval in ms to tick.
 const INTERVAL = 1000;
 
-var eyeTherapyTimers = [0.1,2,3,4,5];
-//  [1,1,1,1,1,1,3,1,1,3,5,2,2,2,5];
+var eyeTherapyTimers = [1,1,1,1,1,1,3,1,1,3,5,2,2,2,5];
 
 var timer = null;
 var timerSequence = null;
@@ -67,10 +66,14 @@ class Timer {
         secDisplay;
     if (rawPassedTime < 0) {
       this.displayTime = '-' + this.displayTime;
+
+      $('.timerDisplay').addClass('isDone');
+    } else {
+      $('.timerDisplay').removeClass('isDone');
     }
 
     $('.timerDisplay').text(this.displayTime);
-    $('.offsetDisplay').text(offset);
+    console.log('offsetDisplay: ' + offset);
   }
 
   playBell() {
@@ -81,6 +84,8 @@ class Timer {
   resetState() {
     this.stop();
 
+    // Issue: Make stop happen instantly before another. The code below will
+    // execute before the stopping happens. Maybe use Promises?
     this.time = 0;
     this.elapsedTime = 0;
     this.display = '0.0';

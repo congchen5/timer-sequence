@@ -4,6 +4,7 @@
     <title>Timer Sequence</title>
     <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/main.css" rel="stylesheet" media="screen">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="js/bootstrap/js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
@@ -14,19 +15,18 @@
       <p>A simple website that helps you set a sequence of pre-established timers.</p>
       <div class="timer">
         <h2 class="timerDisplay">0.0</h2>
-        <h3 class="offsetDisplay">0</h3>
-        <button id="startStopButton" class="btn">
+        <button id="startStopButton" class="btn timerButton">
           Start
         </button>
-        <button id="resetButton" class="btn">
+        <button id="resetButton" class="btn timerButton">
           Reset
         </button>
       </div>
       <div class="sequenceControls">
-        <button id="prevTimerButton" class="btn">
+        <button id="prevTimerButton" class="btn sequenceControlButton">
           Previous Timer
         </button>
-        <button id="nextTimerButton" class="btn">
+        <button id="nextTimerButton" class="btn sequenceControlButton">
           Next Timer
         </button>
       </div>

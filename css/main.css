@@ -12,6 +12,7 @@ html, body {
 }
 
 body {
+  text-align: center;
   margin: 0;
 }
 
@@ -21,9 +22,61 @@ body {
 
 .timer {
   display: block;
+  text-align: center;
+}
+
+.timerDisplay {
+  display: inline-block;
+  padding: 5px 10px;
+
+  border: transparent 2px solid;
+}
+
+@-webkit-keyframes borderBlink {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: red;
+    }
+}
+
+@keyframes timerDisplay {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: red;
+    }
+}
+
+.timerDisplay.isDone {
+  border: red 2px solid;
+  border-radius: 25px;
+  border-color: transparent;
+
+  -webkit-animation: timerDisplay 1s step-end infinite;
+  animation: timerDisplay 1s step-end infinite;
+}
+
+.timerButton {
+  display: block;
+  margin: 5px auto;
+}
+
+#startStopButton {
+  width: 75%;
+}
+
+#resetButton {
+  width: 50%;
 }
 
 .sequenceControls {
   display: block;
-  margin: 5px 0;
+  margin: 25px auto;
+}
+
+.sequenceControlButton {
+  width: 49%;
 }
